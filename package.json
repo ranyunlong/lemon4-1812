@@ -1,0 +1,23 @@
+{
+  "name": "lemon4-1812",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranyunlong/lemon4-1812.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ranyunlong/lemon4-1812/issues"
+  },
+  "homepage": "https://github.com/ranyunlong/lemon4-1812#readme",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
