@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        let name = 100
+        const user = {
+            get name() { // 拦截name 变量的获取
+                console.log('正在获取name变量')
+                return name
+            }, 
+            set name(val) {
+                name = val
+                document.getElementById('app').innerText = val
+                console.log('正在设置name变量',val)
+            }
+        }
+
+        // 拦截器的作用 用户拦截变量的获取和赋值行为
+    </script>
+</body>
+</html>

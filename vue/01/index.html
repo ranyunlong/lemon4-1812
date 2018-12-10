@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        #app {
+            width: 100vw;
+            height: 100vh;
+        }
+        .active {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-bind:style="'background:rgba(0,0,0,'+(alpha / 100)+')'">
+        <!-- 提供模板 -->
+        
+        <!-- 插值表达式 {{}} 单向绑定  -->
+        <h1>{{title}}</h1>
+
+        <!-- v-model 指令 v-model 双向绑定 既可以获取变量 也可以修改变量  -->
+        <input v-model="title" />
+
+
+
+        <!-- v-for 指令 用于循环创建模板 -->
+        {{users}}
+        <ul>
+            <li v-for="(item, index) in users">
+                <span>{{item.name}}</span>
+                <span>{{item.age}}</span>
+                <button v-on:click="deleteUser(item, index)">删除</button>
+                <ul>
+                    <li v-for="child in item.children">
+                        <span>{{child.name}}</span>
+                        <span>{{child.age}}</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- v-show 条件渲染 根据条件来决定是否显示该模板内容 -->
+        <!-- <div v-show="isShow == 1">xxx</div> -->
+
+        <!-- v-if 条件渲染 根据条件来决定是否显示该模板内容 -->
+        <!-- <div v-if="isShow == 1">xxx</div> -->
+        <!-- <input type="text" v-model="isShow"> -->
+
+        <!-- 
+            v-show 是使用display来隐藏元素 虽然隐藏但是元素是被创建好的 依然会消耗dom性能 如果要显示改display
+            v-if   直接从dom移除 隐藏就是没有改元素， 不会消耗性能 如果要显示必须重新创建
+        -->
+
+        <!-- <div v-for="(item, index) in 100000" v-if="index <= 100">{{index}}</div> -->
+        
+
+        <!-- v-bind 给html属性绑定动态值 -->
+        <div v-bind:class="classname"></div>
+        <div v-bind:style="'background:'+ color">xxx</div>
+        <input type="text" v-model="color">
+        <input type="range" v-model="alpha">
+
+        <div v-bind:index="alpha"></div>
+
+        <!-- v-on 指令 给元素绑定事件（不是原生html事件处理方式） -->
+        <!-- 事件的处理方法
+            如果带了括号则不传递 事件对象
+            如果不带括号则默认传递一个事件对象的参数
+        -->
+        <!-- <button v-on:click="click(100, $event)">点击</button> -->
+
+        <input type="text" v-on:input="keydown">
+        
+        <div v-if="showDiv" v-bind:class=" moved ? 'active' : '' " v-on:mousemove="moved = true" v-on:mouseout="moved = false">
+            moved
+        </div>
+
+        {{showDiv}}
+        <button v-on:click="showDiv = !showDiv">切换</button>
+
+        <!-- 
+            v-text 只能绑定文本 使用了该指令的 元素 只能绑定一个内容
+         -->
+        <div v-text="text"></div>
+
+        <!-- 
+            v-html 只能绑定一个内容 里面的内容可以是html标签字符串
+         -->
+        <div v-html="text"></div>
+
+        <textarea cols="30" rows="10" v-model="text"></textarea>
+
+        <!-- 
+            v-if 条件渲染
+            v-else-if
+            v-else
+         -->
+         <div v-if="text == 1">1</div>
+         <div v-else-if="text == 2">2</div>
+         <div v-else>不是1和2的任意内容显示</div>
+
+        <!-- 
+             v-bind:style 如果包含对象 则对象的key 是样式     对象value 是样式的值
+             v-bind:class 如果包含对象 则对象的key 是样式名称 对象value 来决定样式是否要添加
+             class 切换性能更高
+             class 缺点是要预设好
+
+             style 优点不用预设 直接给值
+             style 缺点就是性能差一些
+        -->
+
+        <div 
+            v-bind:style="{
+                background: color
+            }">
+            xxx
+        </div>
+
+        <div 
+            v-bind:class="['defalut', {
+                active: true
+            }]"
+            >
+            xxx
+        </div>
+
+
+    </div>
+    <script>
+
+        const vm = new Vue({
+            el: '#app',
+            data: { // 提供数据
+                classes: {
+                    backgroundColor: 'rgba(255,255,0,0.5)',
+                    height: '100px'
+                },
+                text: '',
+                showDiv: false,
+                moved: false,
+                classname: 'active test',
+                color: 'blue',
+                alpha: 0,
+                title: 'hello world',
+                isShow: 2,
+                users: [
+                    {
+                        name: '张三',
+                        age: 20,
+                        children: [
+                            {
+                                name: '小张三',
+                                age: 1
+                            }
+                        ]
+                    },
+                    {
+                        name: '李四',
+                        age: 21
+                    }
+                ]
+            },
+            methods: { // 提供逻辑方法处理
+                click(a, e) {
+                    console.log(a, e)
+                },
+                add(name, age) {
+                    this.users.push({
+                        name,
+                        age
+                    })
+                }, 
+                deleteUser(item, index) {
+                    this.users.splice(index, 1)
+                },
+                keydown(v) {
+                    console.log(v)
+                },
+                mouseMove() {
+                    this.moved = true
+                }
+            }
+        })
+    </script>
+</body>
+</html>
