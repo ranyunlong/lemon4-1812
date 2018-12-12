@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{val}}
+        {{getValue}}
+        <div>   
+                <input type="text" v-model="value">
+        </div>
+        <div>
+                <input type="text" v-model="title">
+        </div>
+        <input type="text" v-model="val">
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                value: '',
+                title: '',
+                val: ''
+            },
+            methods: {
+                // 如果模板中想要访问方法 必须加上括号
+                // getValue() {
+                //     // 当实例的属性有任意改变时 函数呢都会触发运行
+                //     return this.title = '@' + this.value
+                // }
+            },
+            watch: { // 这个选项用来监控当前实例中的成员发生变化
+                // 监听方式是给 当前实例的成员添加一个同名函数在watch选项里
+                // 就可以监听改成员的变化了
+                value(newVal, oldVal) {
+                    // console.log(newVal, oldVal)
+                    if(/\d/g.test(newVal)) {
+                        // console.log(1)
+                        this.value = newVal.replace(/\d/g, '')
+                    }
+                },
+                title() {
+
+                }
+            },
+            computed: { // 做计算的
+                getValue() {
+                    // 如果模板想要访问该成员 不用加上括号
+                    console.log(1)
+                    return '@' + this.value + this.title
+                }
+            }
+        })
+
+        // data methods computed 不能有相同名称的成员， 如果相同就会被后者覆盖
+    </script>
+</body>
+</html>

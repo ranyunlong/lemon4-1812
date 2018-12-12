@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box" @click.ctrl.exact="click('父元素')">
+            <button >按钮</button>
+        </div>
+
+        <input type="text" value="xxxx" @keydown.enter="input('enter')" @keydown.ctrl.alt="input('1')">
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            methods: {
+                click(e) {
+                    console.log(e)
+                },
+                input(e) {
+                    console.log(e)
+                    // event.preventDefault()
+                    console.log(event.keyCode)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

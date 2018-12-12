@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .input {
+            width: 200px;
+            height: 35px;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+
+        .input input {
+            width: inherit;
+            height: inherit;
+        }
+
+        .input ul {
+            list-style: none;
+            padding: 0;
+            width: inherit;
+            border: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .input ul li {
+            height: 30px;
+            line-height: 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .input ul li.active {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="input">
+            <input type="text" v-model="value">
+            <ul v-if="value && emailList.length > 0">
+                <li :class="{active: index === selectIndex}" @click="select(item)" v-for="(item, index) in emailList">{{item}}</li>
+            </ul>
+        </div>
+
+        <!-- <input type="text" v-model="emaiType">
+        <button @click="emailTypes.push(emaiType), emaiType = ''">添加邮箱类型</button> -->
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data: {
+                selectIndex: 1,
+                value: 'xxx',
+                emaiType: '',
+                emailTypes: ['@qq.com', '@163.com', '@gamil.com']
+            },
+            computed: {
+                emailList() {
+                    if (/@/.test(this.value)) return [];
+                    const arr = []
+                    for(let index in this.emailTypes) {
+                        arr[index] = this.value + this.emailTypes[index]
+                    }
+                    return arr
+                }
+            },
+            methods: {
+                select(item) {
+                    this.value = item
+                }
+            }
+        })
+    </script>
+</body>
+</html>

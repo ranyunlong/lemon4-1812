@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function run(a, v) {
+            return a + v
+        } 
+        
+        // 函数体内 只有一行代码时 可以使用下面写法
+        const run = (a, v) => a + v
+
+
+        function run(a, v) {
+            const c = 2
+            return a + v + c
+        } 
+        
+        // 函数体内有多行代码时 不能省略掉 ｛｝
+        const run = (a, v) => {
+            const c = 2
+            return a + v + c
+        }
+
+        // 函数只有一个参数时 可以省略掉括号
+        function run(a) {
+            return a + 199
+        } 
+        
+        // 不加括号默认到return效果
+        const run = a => a + 199
+
+        // 加了括号必须手动return
+        const run = a => {
+            return a + 199
+        }
+
+        // 函数没有参数时 必须加上括号
+        const arr = () => 100
+
+
+
+    </script>
+</body>
+</html>

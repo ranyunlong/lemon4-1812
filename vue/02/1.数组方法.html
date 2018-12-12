@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        arr.forEach 单纯循环 不会有返回结果
+        arr.map 用于根据一个数组生成一个新的数组和原数组长度相等 (根据原数组组合一个新数组)
+        arr.filter 根据原数组的内容来过滤想要的成员
+        arr.find 查询找到的成员
+        arr.findIndex 查询找到成员的下标
+        (value, index, arr) => {}
+        value 循环出来的每一个项目
+        index  循环的下标
+        arr 原始数组
+    -->
+
+    <script>
+        var arr = [{name: '张三'}, { name: '李四' }, { name: '张明' }]
+        // const a = arr.forEach(function(value, index, arr) {
+        //     console.log(arr)
+        // })
+        // const a = arr.map(function(value, index, arr) {
+        //     return value.name
+        // })
+
+        // const a = arr.filter(function(value, index, arr) {
+        //     // 循环到每一项时 如果返回true 该选项就会被保留到新数组里
+        //     return /三/g.test(value.name)
+        // })
+        
+        // const a = arr.find(function(value, index, arr) {
+        //     // 从数组里找到一个与条件匹配的成员
+        //    return /张/g.test(value.name)
+        // })
+
+        // const a = arr.findIndex(function(value, index, arr) {
+        //     // 从数组里找到一个与条件匹配的成员
+        //    return /张/g.test(value.name)
+        // })
+
+
+
+        // console.log(a)
+
+        
+    </script>
+</body>
+</html>

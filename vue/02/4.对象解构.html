@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 对象解构
+        // 对象解构赋值
+        // const obj = { name: '张三', age: 20}
+        // const { name, age, xxx = 'ccc' } = obj
+
+        // 必须按照对象的key名称来获取 不分 先后顺序
+
+        const str = 'http://www.baidu.com:3000'
+        const split = str.split(':')
+
+        // 完全按照数组的顺序去解构
+        // ...在数组解构时 代表取剩下部分的
+        const [protocol, ...more] = split
+
+        // ...在生成新数组时 代表的是混入...数组里的所有成员到当前数组
+        // console.log(['https', ...more].join(':'))
+
+
+        // ... 不仅可以用到数组 还可以用到对象
+
+        const obj = {
+            name: 'xx',
+            age: '20',
+            children: [1,23,4],
+            color: 'red'
+        }
+
+        // 在作为对象解构时 可以取出剩余成员
+        const { name, age, ...xxx } = obj
+        
+
+        // 在作为生成新的对象时 可以合并当前对象的成员到新的对象里
+        const a = {
+            name: 'haha',
+            ...xxx
+        }
+    </script>
+</body>
+</html>
