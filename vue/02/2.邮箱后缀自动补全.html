@@ -36,12 +36,16 @@
         .input ul li.active {
             background: #ccc;
         }
+        #app{
+            background: red;
+        }
     </style>
 </head>
 <body>
     <div id="app">
+        {{selectIndex}}
         <div class="input">
-            <input type="text" v-model="value">
+            <input type="text" v-model="value" @keydown.enter="enter" @keydown.up.prevent="up" @keydown.down="down">
             <ul v-if="value && emailList.length > 0">
                 <li :class="{active: index === selectIndex}" @click="select(item)" v-for="(item, index) in emailList">{{item}}</li>
             </ul>
@@ -54,7 +58,7 @@
         new Vue({
             el:'#app',
             data: {
-                selectIndex: 1,
+                selectIndex: 0,
                 value: 'xxx',
                 emaiType: '',
                 emailTypes: ['@qq.com', '@163.com', '@gamil.com']
@@ -72,6 +76,22 @@
             methods: {
                 select(item) {
                     this.value = item
+                },
+                up(){
+                    this.selectIndex--
+                },
+                down(){
+                    this.selectIndex++
+                },
+                enter() {
+                    if (this.emailList.length === 0) return;
+                    this.value = this.emailList[this.selectIndex]
+                }
+            },
+            watch: {
+                selectIndex(val, old){
+                    if (val < 0) this.selectIndex =  this.emailTypes.length - 1
+                    if (val > this.emailTypes.length - 1) this.selectIndex = 0
                 }
             }
         })

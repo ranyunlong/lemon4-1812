@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{sex}}
+        <input type="radio" value="男" v-model="sex" />
+        <input type="radio" value="女" v-model="sex" />
+
+
+        {{typeof value1}}
+        <input type="text" v-model.number="value1">
+        +
+        <input type="text" v-model.number="value2">
+        = {{value1 + value2}}
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                sex: '',
+                value1: 1,
+                value2: 1
+            }
+        })
+    </script>
+</body>
+</html>

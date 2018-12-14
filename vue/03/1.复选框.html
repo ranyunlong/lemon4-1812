@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        全选
+        <input type="checkbox" v-model="selectAll">
+
+        <div>
+            <button @click="reSelect">反选</button>
+        </div>
+        <ul>
+            <li v-for="item in users">
+                <input type="checkbox" v-model="item.checked">
+                {{item.name}}
+            </li>
+        </ul>
+        <button @click="deleteMany">批量删除</button>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                selectAll: false,
+                users: [
+                    {
+                        name:'张三',
+                        checked: false,
+                    },
+                    {
+                        name:'李四',
+                        checked: false,
+                    },
+                    {
+                        name:'老王',
+                        checked: false,
+                    }
+                ]
+            },
+            watch: {
+                selectAll(val) {
+                    // console.log(val)
+                    this.users.forEach((item) => {
+                        item.checked = val
+                    })
+                }
+            },
+            methods:{
+                deleteMany() {
+                    this.users = this.users.filter((item) => !item.checked)
+                },
+                reSelect(){
+                    this.users.forEach((item) => {
+                        item.checked = !item.checked
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .radius{
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- <page-a></page-a> -->
+        <!-- <Page-A :page="5" :page-Select-Index="2"></Page-A>
+        <Page-A :page="2" :page-Select-Index="0" /></Page-A>
+        <Page-A :page="10" :page-Select-Index="0" /></Page-A> -->
+    </div>
+    <script>
+        // 全局组件
+        Vue.component('PageA', {
+            props: {
+                page: {
+                    type: Number,
+                    required: true // page必须传递的参数
+                },
+                pageSelectIndex: Number
+            },
+            template: `
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <li :class="{
+                            active: pageSelectIndex === index
+                        }" v-for="(item, index) in page"><a>{{index+1}}</a></li>
+                    <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    </li>
+                </ul>
+            </nav>
+            `
+        })
+
+        Vue.component('Button', {
+            props: {
+                color: {
+                    // type: String,
+                    // default: '#ccc' // 该prop的默认值
+                    validator(value){
+                        return /(red|blue)/.test(value)
+                    }
+                },
+                radius: Boolean // 布尔值的类型， 默认是false
+            },
+            template: `
+            <button
+            @click="handleClick"
+                :class="{
+                    radius
+                }"
+                :style="{
+                    backgroundColor: color
+                }">
+                <slot/>
+            </button>
+            `,
+            methods:{
+                handleClick(){
+                    // 用来触发组件上监听的事件
+                    this.$emit('aa')
+                }
+            },
+            data() { // 组件的data 选项必须是一个函数返回一个对象
+                return {
+                    name: '按钮1'
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+            template:`
+            <div id="app">
+                <PageA :page="5" :page-select-index="2" />
+                <PageA :page="2" :page-select-index="0" />
+                <PageA :page="10" :page-select-index="0" />
+                <Button color="red" radius @aa="handleButtonClick">哈哈</Button>
+                {{title}}
+            </div>
+            `,
+            data(){
+                return {
+                    title:'xx'
+                }
+            },
+            methods:{
+                handleButtonClick(){
+                    alert(1)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
