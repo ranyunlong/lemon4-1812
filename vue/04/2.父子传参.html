@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Test', {
+            props:{
+                title: String,
+            },
+            template: `
+                <div @click="click">{{iTitle}}</div>
+            `,
+            data() {
+                return {
+                    iTitle: this.title
+                }
+            },
+            methods: {
+                click() {
+                    this.iTitle = '123'
+                    this.$emit('click', this.iTitle)
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            template: `
+                <div>
+                    {{title}}
+                    <Test :title="title" @click="click" />
+                </div>
+            `,
+            data: {
+                title: 'xxx'
+            },
+            methods:{
+                click(e) {
+                    // console.log(e)
+                    this.title = e
+                }
+            }
+        })
+
+        
+       
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .Switcher {
+            width: 44px;
+            height: 22px;
+            border-radius: 22px;
+            border: 1px solid #ccc;
+            background: #ccc;
+            transition: background linear .2s;
+        }
+        .Switcher.on {
+            border: 1px solid #2d8cf0;
+            background: #2d8cf0;
+        }
+        .Switcher .btn {
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 100%;
+            transition: transform linear .2s;
+        }
+        .Switcher.on .btn {
+            transform: translateX(22px);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Switcher', {
+            props: {
+                value: Boolean
+            },
+            template: `
+            <div 
+                @click="iValue = !iValue"
+                :class="['Switcher', {
+                    on: iValue
+                }]">
+                <div class="btn">
+                </div>
+            </div>
+            `,
+            data() {
+                return {
+                    iValue: this.value // 只在初始化组件时赋值了一次数据给iValue
+                }
+            },
+            watch: {
+                value(val) {
+                    // 父级发生改变然后传递到组件内部
+                    // console.log('父级传递的value 改变了', val)
+                    this.iValue = val
+                },
+                iValue(val) {
+                    // 组件内部发生变化后通知父级 （子传父）
+                    this.$emit('input', val)
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            template:`
+            <div>
+                
+                <Switcher v-model="value" />
+
+                {{value}}
+                <button @click="value = !value">toggle</button>
+            </div>
+            `,
+            data: {
+                value: false
+            }
+        })
+
+
+    </script>
+</body>
+</html>

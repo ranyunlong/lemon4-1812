@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Test', {
+            props:{
+                value: String
+            },
+            template:`
+            <div @click="click">{{value}}</div>
+            `,
+            methods: {
+                click() {
+                    this.$emit('input', Math.random() * 1000)
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+            template:`
+            <div>
+                {{title}}
+                <Test v-model="title" />
+            </div>
+            `,
+            data: {
+                title: '你好vue'
+            }
+        })
+    </script>
+</body>
+</html>

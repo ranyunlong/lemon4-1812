@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .transfer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .transfer .left,
+        .transfer .right{
+            width: 300px;
+        }
+        .transfer .middle {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .transfer .middle button {
+            width: 100px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        // 负组件传递的参数是单向数据流
+        Vue.component('Transfer', {
+            props: {
+                data1: Array,
+                data2: Array
+            },
+            template: `
+            <div class="transfer">
+                <div class="left">
+                全选
+                    <input type="checkbox" v-model="selectAll1" />
+                    <ul>
+                        <li v-for="item in arr1">
+                            <input type="checkbox" v-model="item.checked" />
+                            {{item.title}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="middle">
+                    <button :disabled="btn1State" @click="handleMoveToRight">右移</button>
+                    <button :disabled="btn2State" @click="handleMoveToLeft">左移</button>
+                </div>
+                <div class="right">
+                        全选
+                    <input type="checkbox" v-model="selectAll2" />
+                    <ul>
+                        <li v-for="item in arr2">
+                            <input type="checkbox" v-model="item.checked" />
+                            {{item.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            `,
+            data() {
+                return {
+                    selectAll1: false,
+                    selectAll2: false,
+                    btn1: true,
+                    btn2: true,
+                    arr1: this.data1,
+                    arr2: this.data2,
+                }
+            },
+            methods: {
+                handleMoveToRight() {
+                    // 选中的
+                    const matchs = this.arr1.filter((item) => item.checked)
+                    
+                    // 剩下的
+                    const filters = this.arr1.filter((item) => !item.checked)
+                    this.arr1 = filters
+
+                    // 生成一个新的数组 每一个成员的 checked 改成false
+                    this.arr2.push(...matchs.map((item) => {
+                        item.checked = false
+                        return item
+                    }))
+
+                    this.selectAll1 = false                    
+                },
+                handleMoveToLeft() {
+                    // 选中的
+                    const matchs = JSON.parse(JSON.stringify(this.arr2.filter((item) => item.checked)))
+                    
+                    // 剩下的
+                    const filters = this.arr2.filter((item) => !item.checked)
+                    this.arr2= filters
+                    
+                    // 生成一个新的数组 每一个成员的 checked 改成false
+                    this.arr1.push(...matchs.map((item) => {
+                        item.checked = false
+                        return item
+                    }))
+
+                    this.selectAll2 = false
+                }
+            },
+            computed: {
+                btn1State() {
+                    console.log('自动计算')
+                    if (this.arr1.find((item) => item.checked)) {
+                        return false
+                    } else {
+                        return true
+                    }
+                },
+                btn2State(){
+                    if (this.arr2.find((item) => item.checked)) {
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+            },
+            watch: {
+                selectAll1(val) {
+                    this.arr1.forEach((item) => {
+                        item.checked = val
+                    })
+                },
+                selectAll2(val) {
+                    this.arr2.forEach((item) => {
+                        item.checked = val
+                    })
+                },
+                // arr1: {
+                //     handler(val){
+                //         if (this.arr1.find((item) => item.checked)) {
+                //             // 取消对按钮的禁用
+                //             this.btn1 = false
+                //         } else {
+                //             this.btn1 = true
+                //         }
+                //     },
+                //     deep: true
+                // },
+                // arr2: {
+                //     handler(val){
+                //         if (this.arr2.find((item) => item.checked)) {
+                //             // 取消对按钮的禁用
+                //             this.btn2 = false
+                //         } else {
+                //             this.btn2 = true
+                //         }
+                //     },
+                //     deep: true
+                // }
+            },
+        })
+
+        const vm = new Vue({
+            el: '#app',
+            template: `
+            <div id="app">
+                <Transfer :data1="data1" :data2="data2" />
+            </div>
+            `,
+            data:{
+                arr1: {
+                    name: 'xx',
+                    title: 'xx'
+                },
+                data1: [
+                    {
+                        checked: false,
+                        title: 'value1'
+                    },
+                    {
+                        checked: false,
+                        title: 'value2'
+                    },
+                    {
+                        checked: false,
+                        title: 'value3'
+                    },
+                    {
+                        checked: false,
+                        title: 'value4'
+                    }
+                ],
+                data2: [
+                {
+                        checked: false,
+                        title: 'value5'
+                    },
+                    {
+                        checked: false,
+                        title: 'valu6'
+                    },
+                    {
+                        checked: false,
+                        title: 'value7'
+                    },
+                    {
+                        checked: false,
+                        title: 'value8'
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

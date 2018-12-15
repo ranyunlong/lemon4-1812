@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Test', {
+            props:{
+                data: null
+            },
+            template: `
+            <div class="test">
+                <input v-model="iTest" />
+            </div>
+            `,
+            data() {
+                return {
+                    iTest: this.data,
+                }
+            },
+            watch:{
+                data(val){
+                    this.iTest = val
+                },
+                iTest(val) {
+                    this.$emit('update:data', val)
+                }
+            },
+        })
+        new Vue({
+            el: '#app',
+            template:`
+            <div>
+                <Test :data.sync="val" />
+
+
+                <div>
+                父
+                    <input type="text" v-model="val" />
+                </div>
+            </div>
+            `,
+            data: {
+                val: 100,
+            }
+        })
+    </script>
+</body>
+</html>
