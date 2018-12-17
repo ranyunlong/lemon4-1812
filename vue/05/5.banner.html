@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./Banner.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./Banner.js"></script>
+    <script src="./Page.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        new Vue({
+            el: '#app',
+            template: `
+            <div>
+                <Page :total="total" :current.sync="current" />
+                {{current}}
+                <input type="number" v-model.number="current" />
+            </div>
+            `,
+            data() {
+                return {
+                    total: 100,
+                    current: 3,
+                    images: [
+                        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545066267481&di=d8f81b25da8de8ba6630357faabc437e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a42458200047a84a0d304f8aa1df.jpg',
+                        'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1545056194&di=dd013f239376fdbd4b09b72d399a4d64&src=http://img.zcool.cn/community/01cbd859320869a8012193a31e16b4.jpg@1280w_1l_2o_100sh.png',
+                        'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1545056203&di=935e96052d249f86cd4bef330e8c06dd&src=http://img.zcool.cn/community/01789159acb0c2a801211d25c5fa7a.jpg@2o.jpg',
+                        'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1545056211&di=8ef4f5422b6de230c277242f55f99f3f&src=http://img.zcool.cn/community/0190a4598707b60000002129807eed.jpg@900w_1l_2o_100sh.jpg'
+                    ]
+                }
+            }
+        })
+
+
+
+    </script>
+</body>
+</html>

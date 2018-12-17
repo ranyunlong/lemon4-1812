@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .card {
+            width: 500px;
+            height: 350px;
+            border-radius: 10px;
+            border: 1px solid #000;
+        }
+        .card header {
+            height: 35px;
+            border-bottom: 1px solid #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Test' ,{
+            props:{
+                title: String
+            },
+            template: `<div class="test">
+            <header>{{title}}</header>
+            <slot />
+            </div>`
+        })
+
+        Vue.component('Card' ,{
+            props: {
+                title: String
+            },
+            template: `<div class="card">
+                <header>
+                    <slot :data1="tt" :data2="aa" name="header" />
+                </header>
+                <main>
+                    <slot />
+                </main>
+                <footer>
+                    <slot name="ft" />
+                </footer>
+            </div>`,
+            data(){
+                return {
+                    tt:'组件的tt变量',
+                    aa: '组件的aa变量'
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data(){
+                return {
+                    tt:'实例的tt变量'
+                }
+            },
+            template: `
+            <div class="app">
+                <Card>
+                    <template slot-scope="{data1, data2}" slot="header">
+                        <h4>{{data2}}</h4>
+                        <div>
+                            <button>缩小</button>
+                            <button>关闭</button>
+                        </div>
+                    </template>
+                    <div>xxx</div>
+                    <div slot="ft">ft</div>
+                </Card>
+            </div>
+            `
+        })
+    </script>
+</body>
+</html>

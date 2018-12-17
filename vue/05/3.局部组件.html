@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        // 全局组件
+        // 使用 Vue.component注册
+        Vue.component('Test', {
+            template: `
+            <div>全局组件Test</div>
+            `
+        })
+
+        // 局部组件
+        const Test1 = {
+            template: `<div>局部组件Test</div>`,
+        }
+
+        new Vue({
+            el: '#app',
+            template:`
+                <Test1 />
+            `,
+            components: { // 不管是实例还是组件里面都有这个选项用来注册私有组件
+                Test1
+            }
+        })
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

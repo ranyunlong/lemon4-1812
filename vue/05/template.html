@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .page{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .page li.active {
+            border-color: #2d8cf0;
+        }
+        .page li {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 1px solid #dcdee2;
+            border-radius: 4px;
+            line-height: 32px;
+            text-align: center;
+            margin-right: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        Vue.component('Page', {
+            props: {
+                total: Number
+            },
+            template: `
+                <ul class="page">
+                    <li @click="prev"><</li>
+                    <li 
+                        @click="click(item)" 
+                        :class="{
+                            active: selectIndex === item
+                        }"
+                        v-for="item in concatBtns">
+                        {{item !== null ? item + 1 : '...'}}
+                    </li>
+                    <li @click="next">></li>
+                </ul>
+            `,
+            data(){
+                return {
+                    selectIndex: 0
+                }
+            },
+            methods: {
+                click(item){
+                    if(item !== null) {
+                        this.selectIndex = item
+                    }
+                },
+                prev() {
+                    this.selectIndex--;
+                    if(this.selectIndex < 0) {
+                        this.selectIndex = 0
+                    }
+                },
+                next() {
+                    this.selectIndex++;
+                    if(this.selectIndex > this.btns.length - 1) {
+                        this.selectIndex = this.btns.length -1
+                    }
+                }
+            },
+            computed: {
+                // 按钮的总数
+                btns() {
+                    let arr = []
+                    for(let i = 0; i < this.total / 10; i++) {
+                        arr.push(i)
+                    }
+                    return arr;
+                },
+                // 省略号之前
+                filterBefore() {
+                    if(this.selectIndex < this.btns.length / 2) {
+                        return this.btns.filter((k,index) => {
+                            return index <= this.selectIndex + 2
+                        })
+                    } else {
+                        return [this.btns[0]]
+                    }
+                   
+                },
+                // 省略号之后
+                filterAfter() {
+                    if(this.selectIndex < this.btns.length / 2) {
+                        return [this.btns[this.btns.length - 1]]
+                    } else {
+                        return this.btns.filter((k, index) => {
+                            return index >= this.selectIndex - 2
+                        })
+                    }
+                   
+                },
+                concatBtns() {
+                    return [].concat(this.filterBefore, null, this.filterAfter)
+                }
+            }
+        })
+        new Vue({
+            el: '#app',
+            template: `
+                <div class="app">
+                    <Page :total="100" />
+                </div>
+            `
+        })
+    
+    </script>
+
+</body>
+</html>

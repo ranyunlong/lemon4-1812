@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .card {
+            width: 300px;
+            height: 320px;
+            background: red;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        // 局部组件
+        const Card = {
+            props:{ // 定义组件的参数
+                title: {
+                    type: String
+                },
+            },
+            methods:{ // 定义组件的处理方法
+                run(){
+
+                }
+            },
+            computed:{  // 自动引用计算的
+                cc(){ // 只想获取多个变量处理后的结果
+                    return this.title + this.haha
+                }
+            },
+            data(){ // 提供数据的
+                return {
+                    haha:'',
+                    data: {},
+                    data1:{
+                        name:'xx'
+                    }
+                }
+            },
+            watch:{ // 监控 props computed data 等相关程序的数据
+                haha(){ // 普通变量同名函数就可以监听
+
+                },
+                // 对象或数组的监听 如果是只针对该对象从一个对象变成另一个新对象
+                data() {
+
+                },
+                // 对象或数组的监听 要想监听他内部的成员发生变化 需要deep检测
+                data1:{
+                    handler(){
+                        // 处理变化
+                        // 只针对现有的成员进行监听
+                        // 如果是新增的成员，不监听
+                    },
+                    deep: true
+                }
+            },
+            template:`
+            <div class="card">
+                <slot />
+            </div>
+            `,
+            components: { // 给组件添加私有组件
+
+            }
+        }
+
+        const Test = {
+            template: `
+            <Card>
+                <div>全局组件Test</div>
+            </Card>
+            `,
+            components: { // 给组件添加私有组件
+                Card
+            }
+        }
+        // 全局组件
+        // 使用 Vue.component注册
+        Vue.component('Test', Test)
+
+        const vm = new Vue({
+            el: '#app',
+            data(){
+                return {
+                    title: 'xxx'
+                }
+            },
+            methods:{
+                run(){
+
+                }
+            },
+            computed:{
+                run(){
+
+                }
+            },
+            template:`
+                <div>
+                    <Test />
+                    <Card>123</Card>
+                </div>
+            `,
+            components:{
+                Card
+            }
+        })
+        console.log(vm)
+    </script>
+</body>
+</html>

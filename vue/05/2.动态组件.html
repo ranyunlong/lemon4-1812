@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        Vue.component('Home', {
+            data() {
+                return {
+                    username:""
+                }
+            },
+            template:`
+            <div>
+                Home1
+                <input v-model="username" />
+            </div>
+            `
+        })
+
+        Vue.component('Admin', {
+            template:`
+            <div>
+                Admin
+                <input />
+            </div>
+            `
+        })
+
+        Vue.component('Test', {
+            template:`
+            <div>Test1</div>
+            `
+        })
+        new Vue({
+            el: '#app',
+            template: `
+            <div class="app">
+                <button v-for="item in arr" @click="handle(item)">{{item}}</button> 
+                <keep-alive>
+                    <component :is="activeComponent" />
+                </keep-alive>
+            </div>
+            `,
+            data(){
+                return {
+                    arr:['Home', 'Test', 'Admin'],
+                    activeComponent: 'Home'
+                }
+            },
+            methods: {
+                handle(item) {
+                    this.activeComponent = item
+                }
+            }
+        })
+    </script>
+</body>
+</html>
