@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        button {
+            position: absolute;
+            top: 0;
+            left: 0;     
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>xxx</div>
+        <input  v-model="data"/>
+        <button @click="show = !show">销毁</button>
+        <!-- <keep-alive> -->
+            <!-- 
+                当一个v-if条件渲染的组件
+                套上了keep-alive时 这个组件永远不会被销毁 只是暂时的脱离的dom
+                但它还在内存中
+                相当于v-show 但是为false时不会再dom中 而是在内存中
+             -->
+            
+        <!-- </keep-alive> -->
+        <!-- <Test v-if="show" /> -->
+    </div>
+    <script>
+        localStorage.setItem('user', 'aaa')
+        Vue.component('Test', {
+            props:{
+                value: Boolean
+            },
+            template: `
+            <div>test</div>
+            `,
+            beforeCreate() {
+                // 组件在创建前执行的钩子（回调）
+                console.log('test组件组件在创建前执行的钩子（回调）')
+            },
+            created() {
+                // 组件创建好啦
+                console.log('test组件组件创建好啦')
+            },
+            beforeMount() {
+                console.log('test组件准备把组件 挂载 dom中')
+                // 准备把组件 挂载 dom中
+                console.log(this.$el)
+            },
+            mounted() {
+                // 已经把组件 挂载 dom中了
+                console.log('test组件已经把组件 挂载 dom中了')
+                console.log(this.$el)
+            },
+            beforeUpdate() {
+                // 当组件里有数据更新时（必须和模板有关联的数据）在更新模板之前
+                console.log('test组件当组件里有数据更新时（必须和模板有关联的数据）在更新模板之前')
+            },
+            updated() {
+                // 在更新模板之后
+                console.log('test组件在更新模板之后')
+            },
+            beforeDestroy() {
+                // 在销毁组件之前
+                // 实例不能执行销毁的钩子
+                console.log('test组件在销毁组件之前')
+            },
+            destroyed() {
+                // 在销毁组件之后
+                console.log('test组件在销毁组件之后')
+            },
+        })
+        const vm = new Vue({
+            el:'#app',
+            data(){
+                return {
+                    data: 100,
+                    show: true,
+                    x: '1px',
+                    y: '2px'
+                }
+            },
+            template: `
+            <div>123 {{data}} <button ref="btns123" :style="{top: y, left: x}">按钮</button><Test ref="tst" /> </div>
+            `,
+            beforeCreate() {
+                // 组件在创建前执行的钩子（回调）
+                
+                // console.log(this.data)
+                console.log('实例在创建前执行的钩子（回调）')
+                setTimeout(() => {
+                    console.log('实例在创建前执行的钩子（回调）')
+                    console.log(this.data = 200)
+                })
+                // 在这里我们可以去执行ajax请求了
+                // 如果是异步数据 可以在 beforeCreate
+            },
+            created() {
+                // 组件创建好啦
+                console.log('实例创建好啦')
+                console.log(this.data)
+                const user = localStorage.getItem('user')
+                this.data = user
+                // 如果说是要初始化同步取来的数据 只能在created里完成
+            },
+            beforeMount() {
+               
+                console.log('准备把实例 挂载 dom中')
+                // 在这里可以访问到组件挂载之前的元素
+                console.log(this.$el)
+                // 准备把组件 挂载 dom中
+                // console.log(this.data)
+            },
+            mounted() {
+                // 已经把组件 挂载 dom中了
+                console.log('已经把实例 挂载 dom中了')
+                // console.log(this.data)
+                console.log(this)
+                // 在这里能够获取到当前组件的模板dom元素
+                // 如果想要对组件已经生成的dom执行 原生js操作的话 可以在这里执行
+                // console.log(, 'xxx')
+                const ele = this.$refs['btns123']
+                ele.style.background = 'red'
+                const move = (e) => {
+                    // ele.style.top = e.clientY + 'px'
+                    // ele.style.left = e.clientX + 'px'
+                    console.log(this)
+                    this.y = e.clientY + 'px'
+                    this.x = e.clientX + 'px'
+                }
+                function up() {
+                    document.removeEventListener('mousemove', move)
+                    document.removeEventListener('mouseup', up)
+                }
+                ele.addEventListener('mousedown', function() {
+                    document.addEventListener('mousemove', move)
+                })
+
+                document.addEventListener('mouseup', up)
+            },
+            beforeUpdate() {
+                // 当组件里有数据更新时（必须和模板有关联的数据）在更新模板之前
+                console.log('当实例里有数据更新时（必须和模板有关联的数据）在更新模板之前')
+            },
+            updated() {
+                // 在更新模板之后
+                console.log('实例在更新模板之后')
+            },
+            beforeDestroy() {
+                // 在销毁组件之前
+                // 实例不能执行销毁的钩子
+                console.log('实例在销毁组件之前')
+            },
+            destroyed() {
+                // 在销毁组件之后
+                console.log('实例在销毁组件之后')
+            },
+        })
+    </script>
+</body>
+</html>

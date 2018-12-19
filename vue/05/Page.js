@@ -12,22 +12,25 @@ Vue.component('Page', {
     },
     computed:{
         pages() {
-            return this.total / this.size
+            const len = this.total / this.size
+            const arr = []
+            for (let i = 1; i <= len; i++) {
+                arr.push(i)
+            }
+            return arr
         },
-
         before() {
-            if (this.iCurrent <= this.pages / 2) {
-                // 计算
-                return this.iCurrent + 2
+            if (this.iCurrent <= this.pages.length / 2) {
+                return this.pages.slice(0, this.iCurrent + 2)
             } else {
-                return 1
+                return [1]
             }
         },
         after() {
-            if (this.iCurrent > this.pages / 2) {
-               return (this.pages - this.iCurrent) + 3
+            if (this.iCurrent > this.pages.length / 2) {
+                return this.pages.slice(this.iCurrent - 3, this.pages.length)
             } else {
-                return 1
+                return [this.pages.length]
             }
         }
     },
@@ -44,8 +47,8 @@ Vue.component('Page', {
             if (val < 1) {
                 this.iCurrent = 1
             }
-            if (val > this.pages) {
-                this.iCurrent = this.pages
+            if (val > this.pages.length) {
+                this.iCurrent = this.pages.length
             }
             this.$emit('update:current', this.iCurrent)
         }
@@ -59,26 +62,26 @@ Vue.component('Page', {
             </a>
             </li>
             <li 
-                @click="iCurrent = index+1"
-                v-for="(item, index) in before"
+                @click="iCurrent = item"
+                v-for="item in before"
                 :class="{
-                    active: iCurrent === (index + 1)
+                    active: iCurrent === item
                 }">
-                <a>{{index + 1}}</a>
+                <a>{{item}}</a>
             </li>
             <li><a>...</a></li>
             <li 
-                @click="iCurrent = pages - after + index + 1"
-                v-for="(item, index) in after"
+                @click="iCurrent = item"
+                v-for="item in after"
                 :class="{
-                    active: iCurrent === pages - after + index + 1
+                    active: iCurrent === item
                 }">
-                <a>{{pages - after + index + 1}}</a>
+                <a>{{item}}</a>
             </li>
             <li>
-            <a href="#" @click="iCurrent++">
-                <span aria-hidden="next">&raquo;</span>
-            </a>
+                <a href="#"  @click="iCurrent++">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
             </li>
         </ul>
     </nav>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 300px;
+            height: 300px;
+            background: red;
+        }
+
+        .box:nth-child(1) {
+            background: yellow;
+        }
+
+        .box:nth-child(2) {
+            background: blue;
+        }
+
+        .box:nth-child(3) {
+            background: red;
+        }
+        
+
+        /* 动画过渡之前的样式 */
+        .scale-enter {
+            transform: scale(0,0) rotate(0deg);
+        }
+
+        /* 动画执行时的样式 */
+        .scale-enter-active {
+            transition: transform 1s linear;
+        }
+
+        /* 动画过渡结束后的样式 */
+        .scale-enter-to {
+            transform: scale(1,1) rotate(360deg);
+        }
+
+        .scale-leave {
+            transform: scale(1,1)
+        }
+
+        /* 动画过渡结束后的样式 */
+        .scale-leave-active {
+            transition: transform .2s linear;
+        }
+
+        .scale-leave-to {
+            transform: scale(0,0)
+        }
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0,0)
+            }
+            to {
+                opacity: 1;
+                transform: scale(1,1)
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1,1)
+            }
+            to {
+                opacity: 0;
+                transform: scale(0,0)
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn .3s linear;
+        }
+
+        .fadeOut {
+            animation: fadeOut .3s linear;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 
+            transition
+            name 指定样式名称
+            enter-active-class 指定进入动画执行时的样式名称
+            leave-active-class 指定离开动画执行时的样式名称
+            里面包含单个元素
+         -->
+
+         <!-- 
+             transition-group
+             里面包含多个元素
+          -->
+        <transition-group
+            enter-active-class="fadeIn"
+            leave-active-class="fadeOut"
+            >
+            <div class="box" 
+                v-show="activeIndex === item" 
+                v-for="(item, index) in 3"
+                :key="item">
+            </div>
+        </transition-group>
+
+        <button @click="show = !show">toggle</button>
+        <input type="number" v-model.number="activeIndex">
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    show: true,
+                    activeIndex: 1
+                }
+            }
+        })
+    </script>
+</body>
+</html>
