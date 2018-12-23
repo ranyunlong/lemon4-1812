@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app" @click="run">
+        {{user.name}}
+        {{user.age}}
+        {{user.sex}}
+    </div>
+    <script>
+        const vm = new Vue({
+            data() {
+                return {
+                    user: {
+                        name:'xx',
+                        age: 20
+                    }
+                }
+            },
+
+            watch: {
+                user: {
+                    handler(v) {
+                        // console.log(v)
+                    },
+                    // deep: true
+                }
+            },
+            methods: {
+                run() {
+                    // delete this.user.name
+                    // this.$delete(this.user, 'name')
+                    // Vue.delete(this.user, 'name')
+
+                    // console.log(Vue.delete === this.$delete)
+
+                    // console.log(this)
+
+                    // 在vue创建组件时 data 选项里的所有数据都会被处理成响应式数据
+                    // 如果是后增加进去的 就不在是响应式数据
+                    // this.user.sex = '男'
+                    // this.user = {
+                    //     name:'xx',
+                    //     age: 20,
+                    //     sex: '男'
+                    // }
+
+                    // console.log(this.user)
+                    this.$watch('user.name', function(val, old) {
+                        console.log(val, old)
+                    })
+
+                    // this.$set(this.user, 'name', '男')
+                    
+                   
+                }
+            },
+        }).$mount('#app')
+    </script>
+</body>
+</html>

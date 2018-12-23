@@ -9,7 +9,6 @@
     width: 100%;
     height: 400px;
     position: absolute;
-    background-color: red;
 }
 
 .banner .item img {
@@ -27,4 +26,26 @@
 
 .banner button.next {
     right: 0;
+}
+
+.banner .btn-group {
+    position: absolute;
+    bottom: 20px;
+    height: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.banner .btn-group .btn-1 {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: red;
+    margin: 0 5px;
+}
+
+
+.banner .btn-group .btn-1.active {
+    background: blue;
 }

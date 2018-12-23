@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .slider {
+            width: 800px;
+            height: 10px;
+            background: #ccc;
+            border-radius: 5px;
+        }
+        .slider .progress {
+            height: inherit;
+            width: 0%;
+            position: relative;
+            background: red;
+            border-radius: 5px;
+        }
+
+        .slider .btn1 {
+            width: 16px;
+            height: 16px;
+            border-radius: 10px;
+            border: 2px solid orangered;
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: #fff;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('Slider', {
+            template: `
+            <div class="slider">
+                <div :style="{width: value + '%'}" class="progress">
+                    <div @mousedown.left.stop="mouseDown" class="btn1"></div>
+                </div>
+                <slot name="header" :data="value"></slot>
+            </div>
+            `,
+            data() {
+                return {
+                    value: 0
+                }
+            },
+            watch: {
+                value(val) {
+                    this.value = Math.round(val/10) * 10
+                    if (val > 100) this.value = 100
+                    if (val < 0) this.value = 0
+                    this.$parent.val = val
+                }
+            },
+            methods: {
+                mouseDown() {
+                    const offsetLeft = this.$el.offsetLeft
+                    const width = this.$el.clientWidth
+                    const move = e => {
+                        const x = e.clientX
+                        this.value = (x - offsetLeft) / width * 100
+                    }
+                    const up = e => {
+                        document.removeEventListener('mousemove', move)
+                        document.removeEventListener('mouseup', up)
+                    }
+
+                    document.addEventListener('mousemove', move)
+                    document.addEventListener('mouseup', up)
+                }
+            },
+            mounted() {
+                console.log(this, 'slider')
+            },
+        })
+
+
+        const vm = new Vue({
+            el: '#app',
+            template: `
+            <div class="app" @click="run">
+                <Slider @click="" @mousedown="">
+                    <div slot="header" slot-scope="data">xxx</div>
+                </Slider>
+                {{val}}
+                <button v-for="item in 5" ref="btn" @click="change(50)">改变</button>
+            </div>
+            `,
+            data(){
+                return {
+                    val: '100'
+                }
+            },
+            created() {
+                console.log(this)
+            },
+            methods: {
+                run() {
+                    console.log(this.$children)
+                },
+                change(val) {
+                    this.$children[0].value = val
+                }
+            }
+        })
+    </script>
+</body>
+</html>

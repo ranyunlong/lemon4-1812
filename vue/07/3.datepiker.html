@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .date-piker{
+            width: 200px;
+            height: 30px;
+            border: 1px solid #ddd;
+            position: relative;
+            border-radius: 5px;
+        }
+        .date-piker input {
+            width: inherit;
+            height: inherit;
+            border: none;
+            box-sizing: border-box;
+            padding: 0 5px;
+        }
+
+        .date-piker .date {
+            position: absolute;
+            width: inherit;
+            border: 1px solid #ddd;
+            top: 37px;
+            border-radius: 5px;
+            height: auto;
+        }
+
+        .date-piker .date header{
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .date-piker .date header .quo {
+            font-size: 20px;
+        }
+        .date-piker .date header span {
+            font-size: 14px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #3c3c3c;
+        }
+        .date-piker .date header span:hover {
+            color:  orangered;
+            cursor: pointer;
+        }
+        .date-piker .date header div {
+            font-size: 12px;
+            flex: 1;
+        }
+
+        .date-piker .date .list,
+        .date-piker .date .days {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            font-size: 12px;
+        }
+
+        .date-piker .date .list li,
+        .date-piker .date .days li {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .date-piker .date .days li {
+            cursor: pointer;
+        }
+
+        .date-piker .date .days li.active {
+            background: red;
+        }
+
+        .date-piker .date .days li.select {
+            background: orangered;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        Vue.component('DatePiker', {
+            data() {
+                return {
+                    originDate: null,
+                    year: null,
+                    month: null,
+                    date: null,
+                    day: null,
+                    iValue: null,
+                    dayList: ['日', '一', '二', '三', '四', '五', '六'],
+                    showDateList: false
+                }
+            },
+            created() {
+                const date = this.originDate = new Date()
+                this.year = date.getFullYear()
+                this.month = date.getMonth()
+                this.date = date.getDate()
+                this.day = date.getDay()
+            },
+            methods: {
+                // 获取一个月有多少天
+                getDays(year, month, deep) {
+                    const originDate = new Date()
+                    const nextDate = new Date()
+
+                    originDate.setFullYear(year)
+                    originDate.setMonth(month)
+                    originDate.setDate(1)
+                    originDate.setHours(0)
+                    originDate.setMinutes(0)
+                    originDate.setSeconds(0)
+
+                    if (month < 11) {
+                        nextDate.setFullYear(year)
+                        nextDate.setMonth(month + 1)
+                    } else {
+                        nextDate.setFullYear(year + 1)
+                        nextDate.setMonth(0)
+                    }
+                    nextDate.setDate(1)
+                    nextDate.setHours(0)
+                    nextDate.setMinutes(0)
+                    nextDate.setSeconds(0)
+
+                    const days = (nextDate.getTime() - originDate.getTime()) / (60 * 1000 * 60 * 24)
+
+                    const daysArr = []
+                    let arr = []
+                    
+                    for(let i = 0; i < days; i ++) {
+                        const date = i + 1
+                        originDate.setDate(date)
+                        arr.push({
+                            date,
+                            year,
+                            month,
+                            color: deep ? '#000' : '#ccc',
+                            day: originDate.getDay()
+                        })
+                        if (originDate.getDay() === 6) {
+                            if (arr.length < 7 && deep) {
+                                // 上一个月
+                                let prevDays;
+                                if (month > 0) {
+                                    prevDays = this.getDays(year, month - 1)
+                                } else {
+                                    prevDays = this.getDays(year - 1, 11)
+                                }
+                                arr = [...prevDays.pop(), ...arr]
+                            }
+                            daysArr.push(arr)
+                            arr = []
+                        }
+                    }
+
+                    // 下一个月
+                    let nextDays;
+                    if (arr.length < 7 && deep) {
+                        if (month < 11) {
+                            nextDays = this.getDays(year, month + 1)
+                        } else {
+                            nextDays = this.getDays(year + 1, 0)
+                        }
+                        arr = [...arr, ...nextDays.shift()]
+                    }
+                    daysArr.push(arr)
+                    if (daysArr.length < 6) {
+                        if (nextDays) {
+                            daysArr.push(nextDays.shift())
+                        }
+                    }
+                   return daysArr
+                },
+                setDate(item){
+                    this.year = item.year
+                    this.month = item.month
+                    this.date = item.date
+                    this.iValue = `${this.year}-${this.month}-${this.date}`
+                },
+                hidden() {
+                    // setTimeout(() => {
+                    //     this.showDateList = false
+                    // }, 100)
+                }
+            },
+            watch: {
+                month(val){
+                    if (val < 0) {
+                        this.month = 11
+                        this.year--
+                    } else if (val > 11) {
+                        this.month = 0
+                        this.year++
+                    }
+                }
+            },
+            computed: {
+                // 获取日期详情
+                getDateInfo() {
+                    return this.getDays(this.year, this.month, true)
+                }
+            },
+            template: `
+            <div class="date-piker">
+                <input type="text" @focus="showDateList = true" @blur="hidden" v-model="iValue" />
+                <div class="date" v-if="showDateList">
+                    <header>
+                        <span @click="year--" class="quo">&laquo;</span>
+                        <span @click="month--">&lt;</span>
+                        <div>{{this.year}}年 {{this.month+1}}月</div>
+                        <span @click="month++">&gt;</span>
+                        <span @click="year++" class="quo">&raquo;</span>
+                    </header>
+                    <ul class="list">
+                        <li v-for="item in dayList">{{item}}</li>
+                    </ul>
+                    <ul class="days" v-for="items in getDateInfo">
+                        <li 
+                            v-for="item in items"
+                            @click="setDate(item)"
+                            :class="{
+                                select: item.year === year && item.date === date && item.month === month,
+                                active: item.year === originDate.getFullYear() && item.date === originDate.getDate() && item.month === originDate.getMonth()
+                            }" 
+                            :style="{
+                                color: item.color
+                            }">
+                            {{item.date}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            `
+        })
+
+        new Vue({
+            el: '#app',
+            template:`
+            <DatePiker />
+            `
+        })
+    </script>
+</body>
+</html>

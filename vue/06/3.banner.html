@@ -18,13 +18,15 @@
             el: '#app',
             template: `
             <div>
-                <Banner :srcs="images" />
+                <Banner :auto-play="auto" :srcs="images" />
+                <input type="checkbox" v-model="auto" />
             </div>
             `,
             data() {
                 return {
                     total: 1000,
                     current: 3,
+                    auto: false,
                     images: [
                         'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545066267481&di=d8f81b25da8de8ba6630357faabc437e&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01a42458200047a84a0d304f8aa1df.jpg',
                         'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1545056194&di=dd013f239376fdbd4b09b72d399a4d64&src=http://img.zcool.cn/community/01cbd859320869a8012193a31e16b4.jpg@1280w_1l_2o_100sh.png',
