@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ranyunlong/lemon4-1812#readme",
   "dependencies": {
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "jsx-loader": "^0.13.2"
   }
 }

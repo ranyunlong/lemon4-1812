@@ -49,11 +49,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            template: path.resolve('index.html'), //提供模板
-            filename: 'index.html'
-        })
+        new VueLoaderPlugin()
     ],
     mode: 'development', // 'production'
     resolve: {
