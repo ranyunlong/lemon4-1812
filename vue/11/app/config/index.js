@@ -10,7 +10,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/proxyapi': {
+        target: "http://console.ranyunlong.com:8080",
+        pathRewrite: {
+          '^/proxyapi': '/renren-fast'
+        }
+      },
+
+      // http://localhost:8080/test/sys/login
+      // http://console.ranyunlong.com:8080/renren-fast/sys/login
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
