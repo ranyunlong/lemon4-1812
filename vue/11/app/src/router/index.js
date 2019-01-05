@@ -3,9 +3,9 @@ import Router from 'vue-router'
 import Home from '@/views/Home'
 import Admin from '@/views/Admin'
 import Login from '@/views/Login'
-import AdminUser from '@/views/User'
-import AdminMenu from '@/views/Menu'
-import AdminUserDetail from '@/views/UserDetail'
+import User from '@/views/sys/User'
+import Role from '@/views/sys/Role'
+
 
 Vue.use(Router)
 
@@ -33,21 +33,20 @@ export default new Router({
       },
       children: [
         {
-          path: 'user',
-          name: 'AdminUser',
-          component: AdminUser,
-          children: [
-            {
-              path: ':name',
-              name: 'AdminUserDetail',
-              component: AdminUserDetail,
-            }
-          ]
+          path: 'sys/user',
+          name: 'AdminSysUser',
+          meta: {
+            auth_login: true
+          },
+          component: User
         },
         {
-          path: 'menu',
-          name: 'AdminMenu',
-          component: AdminMenu
+          path: 'sys/role',
+          name: 'AdminSysRole',
+          meta: {
+            auth_login: true
+          },
+          component: Role
         }
       ]
     },

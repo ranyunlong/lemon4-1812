@@ -1,7 +1,6 @@
 <template>
     <div>
-        User page
-        <router-view />
+        User
     </div>
 </template>
 

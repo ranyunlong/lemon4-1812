@@ -1,86 +1,120 @@
 <template>
-    <div class="admin">
-        <div class="sider">
-            <div>
-                <router-link to="/admin/user/zhangsan/01">zhangsan</router-link>
+    <Layout>
+        <Sider collapsible v-model="sider">
+            <div class="logo">
+                <h1>后台管理系统</h1>
             </div>
-            <div>
-                <router-link to="/admin/user/lisi/01">lisi</router-link>
-            </div>
-            <button @click="go">跳转到menu管理页面</button>
-            <button @click="rep">替换路由</button>
+            <Menu theme="dark" width="auto">
+                <Submenu v-for="item in menu" :key="item.menuId" :name="item.menuId">
+                    <template slot="title">
+                        <Icon type="ios-paper" />
+                        {{item.name}}
+                    </template>
+                    <MenuItem :to="'/admin/' + child.url" v-for="child in item.children" :key="child.menuId" :name="child.menuId">
+                    {{child.name}}
+                    </MenuItem>
+                </Submenu>
+            </Menu>
+        </Sider>
+        <Layout>
+            <Header class="header">
+                <div class="btn">
+                    <Button @click="sider = !sider">
+                        <Icon type="md-menu" />
+                    </Button>
+                </div>
 
-        </div>
-        <div class="content">
-            <header></header>
-            <main>
+                <Dropdown @on-click="handleHeaderDropdown">
+                    <span>
+                        <Icon type="md-person" :size="20" />
+                        {{user.username}}
+                        <Icon type="ios-arrow-down"></Icon>
+                    </span>
+                    <DropdownMenu slot="list">
+                        <DropdownItem name="change_password">修改密码</DropdownItem>
+                        <DropdownItem name="log_out">安全退出</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </Header>
+            <Content>
                 <router-view />
-            </main>
-        </div>
-    </div>
+            </Content>
+        </Layout>
+    </Layout>
 </template>
 
 <script>
+    import http from '@/utils/http'
+
+    // http.get('/sys/log/list', {
+    //     params: {
+    //         page: 1,
+    //         limit: 10,
+    //         sidx: 'id',
+    //         order: 'asc',
+    //         key: ''
+    //     }
+    // }).then()
+    
     export default {
+        data() {
+            return {
+                sider: false,
+                user: {},
+                menuList: []
+            }
+        },
+        beforeCreate() {
+            http.get('/sys/user/info').then(({data}) => {
+                const {code, user} = data
+                if (code === 0) {
+                    this.user = user
+                }
+            })
+            http.get('/sys/menu/list').then(({data}) => {
+                this.menuList = data
+            })
+        },
         methods: {
-            go() {
-                // $route 对象用来获取路由中的数据
-                // $router 是用来处理路由跳转
-                // console.log(this.$router)
-
-                console.log(this.$route)
-
-                /**
-                 * 1. push 跳转到指定页面
-                 * 2. replace 替换上一条访问记录 跳转至指定页面
-                 * 3. back //返回
-                 */
-
-                // 通过路由的path 跳转页面
-                // this.$router.push('/admin/user/lisi')
-                // this.$router.push({
-                //     path: '/admin/user/lisi',
-                //     query: {
-                //         name: 'path'
-                //     }
-                // })
-
-                // 通过路由名称来跳转
-                this.$router.push({
-                    name: 'AdminUserDetail',
-                    params: {
-                        name: 'lisi'
-                    },
-                    query: {
-                        name: 'haha'
-                    }
-                })
-            },
-            rep() {
-                this.$router.replace('/admin')
+            handleHeaderDropdown(name) {
+                if (name === 'log_out') {
+                    this.$router.push('/login')
+                    localStorage.removeItem('token')
+                }
+            }
+        },
+        computed: {
+            menu() {
+                function deep(arr, parentId) {
+                    if (!Array.isArray(arr)) return;
+                    return arr.filter((k) => {
+                        if (k.parentId === parentId) {
+                            k.children = deep(arr, k.menuId)
+                            return true
+                        }
+                    })
+                }
+                return deep(this.menuList, 0)
             }
         }
     }
 </script>
 
 <style scoped>
-.admin {
-    display: flex;
-    height: 100%;
-}
-
-.admin .sider {
-    width: 200px;
-    height: inherit;
-    background: red;
-}
-
-.admin .content {
-    flex: 1;
-}
-
-.admin .content header{
-    height: 64px;
+.header {
+    background: #fff;
+    padding: 0 20px;
     border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+.logo {
+    height: 64px;
+    line-height: 64px;
+    background: #fff;
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 </style>

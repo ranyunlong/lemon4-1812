@@ -1,12 +1,12 @@
 <template>
     <div>
-        Menu Page
-        <button @click="$router.back()">返回</button>
+        Role
     </div>
 </template>
 
 <script>
     export default {
+        
     }
 </script>
 
