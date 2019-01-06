@@ -18,5 +18,6 @@ html,body,#app {
 }
 #app {
   display: flex;
+  min-width: 1000px;
 }
 </style>

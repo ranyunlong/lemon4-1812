@@ -36,7 +36,7 @@
                     </DropdownMenu>
                 </Dropdown>
             </Header>
-            <Content>
+            <Content class="admin-router-view">
                 <router-view />
             </Content>
         </Layout>
@@ -45,17 +45,6 @@
 
 <script>
     import http from '@/utils/http'
-
-    // http.get('/sys/log/list', {
-    //     params: {
-    //         page: 1,
-    //         limit: 10,
-    //         sidx: 'id',
-    //         order: 'asc',
-    //         key: ''
-    //     }
-    // }).then()
-    
     export default {
         data() {
             return {
@@ -116,5 +105,10 @@
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
     overflow: hidden;
+}
+.admin-router-view {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 </style>
