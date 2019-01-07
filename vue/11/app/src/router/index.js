@@ -1,11 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home'
-import Admin from '@/views/Admin'
-import Login from '@/views/Login'
-import User from '@/views/sys/User'
-import Role from '@/views/sys/Role'
 
+// 同步组件
+// import Home from '@/views/Home'
+// import Admin from '@/views/Admin'
+// import Login from '@/views/Login'
+// import User from '@/views/sys/User'
+// import Role from '@/views/sys/Role'
+// import Menu from '@/views/sys/Menu'
+
+// 异步组件
+const Home = () => import('@/views/Home')
+const Admin = () => import('@/views/Admin')
+const Login = () => import('@/views/Login')
+const User = () => import('@/views/sys/User')
+const Role = () => import('@/views/sys/Role')
+const Menu = () => import('@/views/sys/Menu')
 
 Vue.use(Router)
 
@@ -47,6 +57,14 @@ export default new Router({
             auth_login: true
           },
           component: Role
+        },
+        {
+          path: 'sys/menu',
+          name: 'AdminSysMenu',
+          meta: {
+            auth_login: true
+          },
+          component: Menu
         }
       ]
     },

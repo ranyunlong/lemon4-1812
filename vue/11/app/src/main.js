@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import iview from 'iview'
+// 打包的时候注释掉css
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iview)
@@ -41,6 +43,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

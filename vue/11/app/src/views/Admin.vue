@@ -45,26 +45,26 @@
 
 <script>
     import http from '@/utils/http'
+    import { mapActions, mapGetters } from 'vuex'
     export default {
         data() {
             return {
-                sider: false,
-                user: {},
-                menuList: []
+                sider: false
             }
         },
-        beforeCreate() {
-            http.get('/sys/user/info').then(({data}) => {
-                const {code, user} = data
-                if (code === 0) {
-                    this.user = user
-                }
-            })
-            http.get('/sys/menu/list').then(({data}) => {
-                this.menuList = data
-            })
+        created() {
+            if (!this.user.username) {
+                this.GET_USER_INFO()
+            }
+            if (this.menu.length === 0) {
+                this.GET_MENU_LIST()
+            }
         },
         methods: {
+            ...mapActions([
+                'GET_USER_INFO',
+                'GET_MENU_LIST'
+            ]),
             handleHeaderDropdown(name) {
                 if (name === 'log_out') {
                     this.$router.push('/login')
@@ -73,18 +73,10 @@
             }
         },
         computed: {
-            menu() {
-                function deep(arr, parentId) {
-                    if (!Array.isArray(arr)) return;
-                    return arr.filter((k) => {
-                        if (k.parentId === parentId) {
-                            k.children = deep(arr, k.menuId)
-                            return true
-                        }
-                    })
-                }
-                return deep(this.menuList, 0)
-            }
+            ...mapGetters([
+                'user',
+                'menu'
+            ])
         }
     }
 </script>
@@ -110,5 +102,6 @@
     width: 100%;
     overflow: hidden;
     position: relative;
+    display: flex;
 }
 </style>
