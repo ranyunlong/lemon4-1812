@@ -19,7 +19,7 @@ module.exports = {
       viewportWidth: 720,           // 设计稿的宽度
       // viewportHeight: 568,       // 设计稿的高度
       unitPrecision: 5,             // 计算精度
-      viewportUnit: 'vw',           // 预设计算单位
+      viewportUnit: 'vmin',           // 预设计算单位
       selectorBlackList: [ 'mint' ],        // 选择器黑名单
       minPixelValue: 1,             // 要计算的最小值
       mediaQuery: false             // 是否处理媒介查询
